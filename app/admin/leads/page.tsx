@@ -1,0 +1,9 @@
+import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
+import { auth } from '@/lib/auth'
+import { db } from '@/lib/db'
+import { user } from '@/lib/db/schema'
+import { eq } from 'drizzle-orm'
+import { getLeads, updateLeadStatusFromForm } from '@/app/actions/leads'
+
+export default async function AdminLeadsPage() { const session = await auth.api.getSession({ headers: await headers() }); if (!session?.user) redirect('/sign-in'); const [currentUser] = await db.select({ role: user.role }).from(user).where(eq(user.id, session.user.id)).limit(1); if (currentUser?.role !== 'admin') redirect('/'); const leads = await getLeads(); return <main className="site-shell min-h-screen px-6 py-24"><div className="mx-auto max-w-6xl"><p className="eyebrow">Admin console</p><h1 className="display-title mt-4 text-6xl">Consultation leads.</h1><div className="mt-12 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]"><div className="min-w-[800px] divide-y divide-white/10">{leads.map((lead) => <div key={lead.id} className="grid grid-cols-[1.3fr_1.5fr_1fr_1fr_1fr] gap-4 p-5 text-sm"><div><p className="font-medium text-white">{lead.name}</p><p className="text-white/40">{lead.contactNumber}</p></div><p className="text-white/70">{lead.email}</p><p className="text-white/60">{lead.annualRevenue}</p><p className="text-white/60">{lead.teamSize}</p><form action={updateLeadStatusFromForm} className="flex items-center gap-2"><input type="hidden" name="id" value={lead.id} /><select name="status" defaultValue={lead.status} className="neon-input py-2 text-xs"><option>new</option><option>contacted</option><option>qualified</option><option>closed</option></select><button className="text-xs text-cyan-300" type="submit">Save</button></form></div>)}{leads.length === 0 && <p className="p-8 text-white/50">No consultation leads yet.</p>}</div></div></div></main> }

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
+  { label: "Solutions", href: "/solutions" },
   { label: "Features", href: "#features" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "Pricing", href: "#pricing" },
@@ -78,11 +79,11 @@ export function Navigation() {
             {/* CTA */}
             <div className="hidden md:flex items-center gap-3">
               <a
-                href="#pricing"
+                href="/sign-in"
                 className="relative inline-flex items-center px-5 py-2.5 text-sm font-medium text-primary-foreground bg-primary rounded-full overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-primary/25 hover:scale-105 active:scale-95"
                 data-cursor-hover
               >
-                <span className="relative z-10">Get Started</span>
+                <span className="relative z-10">Sign in</span>
               </a>
             </div>
 
@@ -123,7 +124,7 @@ export function Navigation() {
             </a>
           ))}
           <a
-            href="#pricing"
+            href="/sign-in"
             className="mt-4 inline-flex items-center px-8 py-3 text-base font-medium text-primary-foreground bg-primary rounded-full"
             style={{
               opacity: isMobileOpen ? 1 : 0,

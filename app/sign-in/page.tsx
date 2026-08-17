@@ -1,0 +1,3 @@
+import Link from 'next/link'
+import { AuthForm } from '@/components/auth-form'
+export default function SignInPage() { return <main className="site-shell flex min-h-screen items-center px-6 py-20"><div className="mx-auto w-full max-w-xl text-center"><p className="eyebrow">Emporri workspace</p><h1 className="display-title mt-4 text-5xl">Welcome back.</h1><p className="mx-auto mt-4 max-w-md text-white/60">Sign in to continue to your AI transformation workspace.</p><div className="glass-panel mt-10 p-6 sm:p-10"><AuthForm mode="sign-in" /><p className="mt-6 text-sm text-white/50">New to Emporri? <Link className="text-cyan-300" href="/sign-up">Create an account</Link></p></div></div></main> }

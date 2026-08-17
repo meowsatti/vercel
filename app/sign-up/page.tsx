@@ -1,0 +1,3 @@
+import Link from 'next/link'
+import { AuthForm } from '@/components/auth-form'
+export default function SignUpPage() { return <main className="site-shell flex min-h-screen items-center px-6 py-20"><div className="mx-auto w-full max-w-xl text-center"><p className="eyebrow">Start building smarter</p><h1 className="display-title mt-4 text-5xl">Your next system starts here.</h1><div className="glass-panel mt-10 p-6 sm:p-10"><AuthForm mode="sign-up" /><p className="mt-6 text-sm text-white/50">Already have an account? <Link className="text-cyan-300" href="/sign-in">Sign in</Link></p></div></div></main> }
