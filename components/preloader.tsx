@@ -11,7 +11,7 @@ export function Preloader() {
     const timer = setTimeout(() => {
       setFadeOut(true);
       setTimeout(() => setIsLoading(false), 600);
-    }, 2200);
+    }, 900);
 
     return () => clearTimeout(timer);
   }, []);
@@ -25,9 +25,9 @@ export function Preloader() {
       }`}
     >
       <div
-        className="relative w-24 h-24 md:w-32 md:h-32"
+        className="relative w-24 h-24 overflow-hidden rounded-full md:w-32 md:h-32"
         style={{
-          animation: "logo-spin 2s ease-in-out infinite, logo-pulse 2s ease-in-out infinite",
+          animation: "logo-spin-3d 1.4s linear infinite, neon-pulse-glow 1.4s ease-in-out infinite",
         }}
       >
         <Image
@@ -35,7 +35,7 @@ export function Preloader() {
           alt="Emporri Logo"
           fill
           sizes="(max-width: 768px) 96px, 128px"
-          className="object-contain rounded-2xl"
+          className="object-contain mix-blend-screen"
           priority
         />
       </div>

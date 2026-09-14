@@ -1,140 +1,68 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useRef } from "react";
 
 export function CustomCursor() {
-  const [position, setPosition] = useState({ x: -100, y: -100 });
-  const [trailPosition, setTrailPosition] = useState({ x: -100, y: -100 });
-  const [isHovering, setIsHovering] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [isMobile, setIsMobile] = useState(true);
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768);
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return;
+
+    let frame = 0;
+    let x = -100;
+    let y = -100;
+    let ringX = x;
+    let ringY = y;
+
+    const render = () => {
+      ringX += (x - ringX) * 0.2;
+      ringY += (y - ringY) * 0.2;
+      dot.style.transform = `translate3d(${x - 4}px, ${y - 4}px, 0)`;
+      ring.style.transform = `translate3d(${ringX - 20}px, ${ringY - 20}px, 0)`;
+      frame = requestAnimationFrame(render);
     };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    setPosition({ x: e.clientX, y: e.clientY });
-    setIsVisible(true);
-  }, []);
+    const handleMove = (event: MouseEvent) => {
+      x = event.clientX;
+      y = event.clientY;
+      dot.style.opacity = "1";
+      ring.style.opacity = "1";
+    };
 
-  const handleMouseLeave = useCallback(() => {
-    setIsVisible(false);
-  }, []);
+    const handleLeave = () => {
+      dot.style.opacity = "0";
+      ring.style.opacity = "0";
+    };
 
-  useEffect(() => {
-    if (isMobile) return;
-
-    window.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("mousemove", handleMove, { passive: true });
+    document.addEventListener("mouseleave", handleLeave);
+    frame = requestAnimationFrame(render);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("mousemove", handleMove);
+      document.removeEventListener("mouseleave", handleLeave);
+      cancelAnimationFrame(frame);
     };
-  }, [isMobile, handleMouseMove, handleMouseLeave]);
-
-  // Trail follows main cursor with delay
-  useEffect(() => {
-    if (isMobile) return;
-    let animationId: number;
-    const animate = () => {
-      setTrailPosition((prev) => ({
-        x: prev.x + (position.x - prev.x) * 0.12,
-        y: prev.y + (position.y - prev.y) * 0.12,
-      }));
-      animationId = requestAnimationFrame(animate);
-    };
-    animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
-  }, [position, isMobile]);
-
-  // Track hover state on interactive elements
-  useEffect(() => {
-    if (isMobile) return;
-
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.closest("a, button, [role='button'], input, textarea, select, [data-cursor-hover]")
-      ) {
-        setIsHovering(true);
-      }
-    };
-
-    const handleMouseOut = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.closest("a, button, [role='button'], input, textarea, select, [data-cursor-hover]")
-      ) {
-        setIsHovering(false);
-      }
-    };
-
-    document.addEventListener("mouseover", handleMouseOver);
-    document.addEventListener("mouseout", handleMouseOut);
-
-    return () => {
-      document.removeEventListener("mouseover", handleMouseOver);
-      document.removeEventListener("mouseout", handleMouseOut);
-    };
-  }, [isMobile]);
-
-  if (isMobile) return null;
+  }, []);
 
   return (
     <>
-      {/* Hide default cursor */}
       <style jsx global>{`
-        * {
-          cursor: none !important;
+        @media (pointer: fine) {
+          body { cursor: none; }
+          a, button, input, textarea, select { cursor: none; }
         }
       `}</style>
-
-      {/* Main dot */}
-      <div
-        className="custom-cursor"
-        style={{
-          transform: `translate(${position.x - 4}px, ${position.y - 4}px)`,
-          opacity: isVisible ? 1 : 0,
-          transition: "opacity 0.2s ease",
-        }}
-      >
-        <div
-          className="rounded-full bg-foreground"
-          style={{
-            width: isHovering ? 6 : 8,
-            height: isHovering ? 6 : 8,
-            transition: "width 0.3s ease, height 0.3s ease",
-          }}
-        />
+      <div ref={dotRef} className="custom-cursor pointer-events-none fixed left-0 top-0 z-[110] opacity-0">
+        <span className="block h-2 w-2 rounded-full bg-foreground" />
       </div>
-
-      {/* Trailing ring */}
-      <div
-        className="custom-cursor"
-        style={{
-          transform: `translate(${trailPosition.x - (isHovering ? 28 : 20)}px, ${
-            trailPosition.y - (isHovering ? 28 : 20)
-          }px)`,
-          opacity: isVisible ? 1 : 0,
-          transition: "opacity 0.2s ease",
-        }}
-      >
-        <div
-          className="rounded-full border border-foreground/40"
-          style={{
-            width: isHovering ? 56 : 40,
-            height: isHovering ? 56 : 40,
-            transition: "width 0.4s cubic-bezier(0.16,1,0.3,1), height 0.4s cubic-bezier(0.16,1,0.3,1)",
-            background: isHovering ? "hsl(336 100% 50% / 0.08)" : "transparent",
-          }}
-        />
+      <div ref={ringRef} className="custom-cursor pointer-events-none fixed left-0 top-0 z-[109] opacity-0">
+        <span className="block h-10 w-10 rounded-full border border-foreground/35" />
       </div>
     </>
   );

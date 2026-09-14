@@ -55,11 +55,11 @@ export function LiveCallSection() {
 
   const isBusy = state === "starting" || state === "live";
   return (
-    <section id="live-demo" className="relative overflow-hidden px-6 py-24 md:py-32">
+    <section id="live-demo" className="relative overflow-hidden px-6 py-16 md:py-20">
       <div className="absolute left-1/2 top-1/3 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-primary/10 blur-[110px]" />
       <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-primary"><span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_hsl(320_100%_55%)]" />Live demo</div>
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-primary"><span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_hsl(336_100%_50%)]" />Live demo</div>
           <h2 className="max-w-xl text-4xl font-bold tracking-tight text-foreground md:text-6xl">Talk to live AI agent</h2>
           <p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground md:text-lg">Give your agent a quick test drive. Tell us who it represents, then hear how naturally it can handle your next customer conversation.</p>
           <div className="mt-8 flex items-center gap-3 text-sm text-muted-foreground"><ShieldCheck size={18} className="text-secondary" /> Private demo · microphone access required</div>

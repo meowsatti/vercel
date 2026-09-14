@@ -28,7 +28,7 @@ export function ComparisonSection() {
   }, []);
 
   return (
-    <section className="relative py-24 md:py-32 px-6" ref={ref}>
+    <section className="relative py-16 md:py-20 px-6" ref={ref}>
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
@@ -110,7 +110,7 @@ export function ComparisonSection() {
             </div>
             <div className="px-6 py-5 flex items-center justify-center">
               <span className="text-lg font-bold text-muted-foreground font-mono line-through">
-                $3,500
+                $4,500
               </span>
             </div>
           </div>

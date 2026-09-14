@@ -53,7 +53,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6 pt-20">
+    <section className="relative min-h-[calc(100svh-1rem)] flex flex-col items-center justify-center overflow-hidden px-6 pt-16 pb-8">
       {/* Background glow effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div

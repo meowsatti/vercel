@@ -124,7 +124,7 @@ function FeatureCard({
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="relative py-24 md:py-32 px-6">
+    <section id="features" className="relative py-16 md:py-20 px-6">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
         <div className="text-center mb-16 md:mb-20">

@@ -53,7 +53,7 @@ export function HowItWorksSection() {
     <section
       id="how-it-works"
       ref={ref}
-      className="relative py-24 md:py-32 px-6"
+      className="relative py-16 md:py-20 px-6"
     >
       {/* Background accent */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

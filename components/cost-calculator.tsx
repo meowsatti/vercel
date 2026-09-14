@@ -21,12 +21,12 @@ export function CostCalculator() {
   }, []);
 
   const monthlyCost = avd * acd * 30 * 0.3;
-  const traditionalCost = 3500;
+  const traditionalCost = 4500;
   const savings = traditionalCost - monthlyCost;
   const savingsPercentage = Math.round((savings / traditionalCost) * 100);
 
   return (
-    <section id="pricing" className="relative py-24 md:py-32 px-6" ref={ref}>
+    <section id="pricing" className="relative py-16 md:py-20 px-6" ref={ref}>
       {/* Background glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
