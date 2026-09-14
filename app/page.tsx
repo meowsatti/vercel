@@ -7,7 +7,6 @@ import { HowItWorksSection } from "@/components/how-it-works-section";
 import { ComparisonSection } from "@/components/comparison-section";
 import { CostCalculator } from "@/components/cost-calculator";
 import { Footer } from "@/components/footer";
-import { SolutionsPreview } from "@/components/solutions-preview";
 
 export default function Page() {
   return (
@@ -18,7 +17,6 @@ export default function Page() {
       <main>
         <HeroSection />
         <FeaturesSection />
-        <SolutionsPreview />
         <HowItWorksSection />
         <ComparisonSection />
         <CostCalculator />

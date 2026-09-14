@@ -1,3 +1,0 @@
-import { ConsultationForm } from '@/components/consultation-form'
-
-export default function ConsultationPage() { return <main className="site-shell min-h-screen px-6 py-28"><div className="mx-auto max-w-4xl"><p className="eyebrow">Limited-time invitation</p><h1 className="display-title mt-5 max-w-3xl">Turn your next bottleneck into an unfair advantage.</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-white/60">Book a private AI opportunity session, normally valued at $999. We are opening a limited number of complimentary sessions for teams ready to move.</p><div className="glass-panel mt-12 p-6 sm:p-10"><ConsultationForm /></div></div></main> }
