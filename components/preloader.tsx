@@ -25,7 +25,7 @@ export function Preloader() {
       }`}
     >
       <div
-        className="relative w-24 h-24 overflow-hidden rounded-full md:w-32 md:h-32"
+        className="relative w-24 h-24 md:w-32 md:h-32"
         style={{
           animation: "logo-spin-3d 1.4s linear infinite, neon-pulse-glow 1.4s ease-in-out infinite",
         }}

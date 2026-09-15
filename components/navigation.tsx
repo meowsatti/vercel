@@ -46,7 +46,7 @@ export function Navigation() {
           <div className="flex h-16 md:h-20 items-center justify-between">
             {/* Logo */}
             <a href="#" className="flex items-center gap-3 group" data-cursor-hover>
-              <div className="relative w-9 h-9 md:w-10 md:h-10 overflow-hidden rounded-full transition-transform duration-300 group-hover:scale-110">
+              <div className="relative w-9 h-9 md:w-10 md:h-10 transition-transform duration-300 group-hover:scale-110">
                 <Image
                   src="/logo.jpg"
                   alt="Emporri"

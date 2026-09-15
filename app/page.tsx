@@ -6,7 +6,7 @@ import { LiveCallSection } from "@/components/live-call-section";
 import { FeaturesSection } from "@/components/features-section";
 import { HowItWorksSection } from "@/components/how-it-works-section";
 import { ComparisonSection } from "@/components/comparison-section";
-import { CostCalculator } from "@/components/cost-calculator";
+import { RoiCalculator, TrustedCompaniesSection, TestimonialsSection, BlogSection } from "@/components/trusted-companies-section";
 import { Footer } from "@/components/footer";
 
 export default function Page() {
@@ -18,10 +18,13 @@ export default function Page() {
       <main>
         <HeroSection />
         <LiveCallSection />
+        <TrustedCompaniesSection />
         <FeaturesSection />
         <HowItWorksSection />
         <ComparisonSection />
-        <CostCalculator />
+        <RoiCalculator />
+        <TestimonialsSection />
+        <BlogSection />
       </main>
       <Footer />
     </>

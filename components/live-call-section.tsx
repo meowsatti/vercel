@@ -9,8 +9,7 @@ const MAX_SECONDS = 60;
 
 export function LiveCallSection() {
   const [businessName, setBusinessName] = useState("");
-  const [agentName, setAgentName] = useState("");
-  const [agentType, setAgentType] = useState("");
+  const [businessType, setBusinessType] = useState("");
   const [state, setState] = useState<CallState>("idle");
   const [seconds, setSeconds] = useState(0);
   const [message, setMessage] = useState("");
@@ -30,12 +29,22 @@ export function LiveCallSection() {
 
   async function startCall(event: React.FormEvent) {
     event.preventDefault();
-    if (!businessName.trim() || !agentName.trim() || !agentType.trim()) {
-      setState("error"); setMessage("Please complete all three fields before starting the call."); return;
+    if (!businessName.trim() || !businessType.trim()) {
+      setState("error"); setMessage("Please complete both fields before starting the call."); return;
+    }
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setState("error"); setMessage("Microphone access is unavailable in this browser."); return;
+    }
+    let microphoneStream: MediaStream;
+    try {
+      microphoneStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      microphoneStream.getTracks().forEach((track) => track.stop());
+    } catch {
+      setState("error"); setMessage("Please allow microphone access before starting the demo call."); return;
     }
     setState("starting"); setMessage("Preparing your secure demo call…"); setSeconds(0);
     try {
-      const response = await fetch("/api/retell/web-call", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ businessName, agentName, agentType }) });
+      const response = await fetch("/api/retell/web-call", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ businessName, businessType }) });
       const data = await response.json();
       if (!response.ok || !data.accessToken) throw new Error(data.error || "Unable to start the call.");
       const client = new RetellWebClient();
@@ -65,7 +74,7 @@ export function LiveCallSection() {
           <div className="mt-8 flex items-center gap-3 text-sm text-muted-foreground"><ShieldCheck size={18} className="text-secondary" /> Private demo · microphone access required</div>
         </div>
         <div className="rounded-3xl border border-border bg-card/70 p-5 shadow-2xl shadow-primary/5 backdrop-blur md:p-8">
-          {isBusy ? <div className="flex min-h-[360px] flex-col items-center justify-center text-center"><div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-secondary/40 bg-secondary/10 text-secondary shadow-[0_0_35px_hsl(170_100%_50%_/_0.25)]"><Mic size={30} className={state === "live" ? "animate-pulse" : ""} /></div><p className="text-sm font-medium uppercase tracking-[0.18em] text-secondary">{state === "live" ? "Live connection" : "Connecting"}</p><p className="mt-3 text-muted-foreground">{message}</p><div className="mt-6 flex items-center gap-2 font-mono text-2xl text-foreground"><Timer size={20} className="text-primary" /> {String(Math.max(0, MAX_SECONDS - seconds)).padStart(2, "0")}s</div><button type="button" onClick={() => void endCall()} className="mt-8 inline-flex items-center gap-2 rounded-full border border-destructive/50 px-5 py-2.5 text-sm text-destructive transition-colors hover:bg-destructive/10"><Phone size={16} /> End call</button></div> : <form onSubmit={startCall} className="space-y-5"><div className="flex items-center gap-3 border-b border-border pb-5"><Headphones className="text-primary" size={22} /><div><p className="font-semibold text-foreground">Set up your demo</p><p className="text-sm text-muted-foreground">Your agent will use these details in the conversation.</p></div></div><Field label="Business name" value={businessName} onChange={setBusinessName} placeholder="e.g. Acme Dental" /><Field label="Agent name" value={agentName} onChange={setAgentName} placeholder="e.g. Alex" /><Field label="Agent type" value={agentType} onChange={setAgentType} placeholder="e.g. Receptionist, sales rep" />{message && <p role="alert" className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">{message}</p>}<button type="submit" disabled={isBusy} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 font-medium text-primary-foreground shadow-lg shadow-primary/20 transition hover:scale-[1.01] hover:shadow-primary/35 disabled:cursor-wait disabled:opacity-60"><Phone size={18} />Start demo call</button><p className="flex items-center justify-center gap-2 text-center text-xs text-muted-foreground"><Timer size={14} /> Demo calls automatically end after 60 seconds</p></form>}
+          {isBusy ? <div className="flex min-h-[360px] flex-col items-center justify-center text-center"><div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-secondary/40 bg-secondary/10 text-secondary shadow-[0_0_35px_hsl(170_100%_50%_/_0.25)]"><Mic size={30} className={state === "live" ? "animate-pulse" : ""} /></div><p className="text-sm font-medium uppercase tracking-[0.18em] text-secondary">{state === "live" ? "Live connection" : "Connecting"}</p><p className="mt-3 text-muted-foreground">{message}</p><div className="mt-6 flex items-center gap-2 font-mono text-2xl text-foreground"><Timer size={20} className="text-primary" /> {String(Math.max(0, MAX_SECONDS - seconds)).padStart(2, "0")}s</div><button type="button" onClick={() => void endCall()} className="mt-8 inline-flex items-center gap-2 rounded-full border border-destructive/50 px-5 py-2.5 text-sm text-destructive transition-colors hover:bg-destructive/10"><Phone size={16} /> End call</button></div> : <form onSubmit={startCall} className="space-y-5"><div className="flex items-center gap-3 border-b border-border pb-5"><Headphones className="text-primary" size={22} /><div><p className="font-semibold text-foreground">Set up your demo</p><p className="text-sm text-muted-foreground">Your AI agent will use these details in the conversation.</p></div></div><Field label="Business name" value={businessName} onChange={setBusinessName} placeholder="e.g. Acme Dental" /><Field label="Business type" value={businessType} onChange={setBusinessType} placeholder="e.g. Dental clinic, SaaS company" />{message && <p role="alert" className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">{message}</p>}<button type="submit" disabled={isBusy} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 font-medium text-primary-foreground shadow-lg shadow-primary/20 transition hover:scale-[1.01] hover:shadow-primary/35 disabled:cursor-wait disabled:opacity-60"><Phone size={18} />Start demo call</button><p className="flex items-center justify-center gap-2 text-center text-xs text-muted-foreground"><Timer size={14} /> Demo calls automatically end after 60 seconds</p></form>}
           {state === "ended" && <div className="mt-5 flex items-center justify-between rounded-xl border border-secondary/25 bg-secondary/5 px-4 py-3 text-sm text-secondary"><span>{message}</span><button type="button" aria-label="Try again" onClick={() => { setState("idle"); setMessage(""); }}><RotateCcw size={17} /></button></div>}
         </div>
       </div>

@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 export function Footer() {
   return (
     <footer className="relative px-6">
+      <a href="https://wa.me/447762121336?text=Hi%21%20I%20would%20like%20to%20make%20an%20inquiry%20about%20your%20AI%20services" target="_blank" rel="noreferrer" aria-label="Chat with Emporri on WhatsApp" className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-sm font-semibold text-black shadow-lg shadow-black/30 transition-transform hover:scale-105">WhatsApp</a>
       {/* CTA section */}
       <div className="max-w-5xl mx-auto mb-20">
         <div className="relative rounded-3xl border border-border/30 bg-card/20 backdrop-blur-sm overflow-hidden p-10 md:p-16 text-center">
@@ -44,17 +45,19 @@ export function Footer() {
         </div>
       </div>
 
+      <div className="mx-auto mb-10 max-w-4xl text-center"><p className="text-xl font-bold tracking-tight text-foreground md:text-2xl">&lt;/&gt; Designed, developed and deployed by Emporri AI &lt;/&gt;</p><p className="mt-3 text-sm text-muted-foreground">San Francisco, California</p></div>
+
       {/* Footer bottom */}
       <div className="max-w-7xl mx-auto border-t border-border/30 py-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <div className="relative w-8 h-8 overflow-hidden rounded-lg">
+            <div className="relative w-8 h-8">
               <Image
                 src="/logo.jpg"
                 alt="Emporri"
                 fill
                 sizes="32px"
-                className="object-contain"
+                className="object-contain mix-blend-screen"
               />
             </div>
             <span className="text-sm font-medium text-foreground">
