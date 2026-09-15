@@ -8,12 +8,13 @@ export function Preloader() {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setFadeOut(true);
-      setTimeout(() => setIsLoading(false), 600);
-    }, 900);
+    const fadeTimer = window.setTimeout(() => setFadeOut(true), 450);
+    const removeTimer = window.setTimeout(() => setIsLoading(false), 700);
 
-    return () => clearTimeout(timer);
+    return () => {
+      window.clearTimeout(fadeTimer);
+      window.clearTimeout(removeTimer);
+    };
   }, []);
 
   if (!isLoading) return null;
@@ -27,7 +28,7 @@ export function Preloader() {
       <div
         className="relative w-24 h-24 md:w-32 md:h-32"
         style={{
-          animation: "logo-spin-3d 1.4s linear infinite, neon-pulse-glow 1.4s ease-in-out infinite",
+          animation: "neon-pulse-glow 2.4s ease-in-out infinite",
         }}
       >
         <Image
